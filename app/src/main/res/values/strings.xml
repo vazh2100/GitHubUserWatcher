@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">GitHubUserWatcher</string>
+    <string name="con_desc_user_avatar">Аватар пользователя</string>
+    <string name="label_name">Имя:</string>
+    <string name="label_location">Местоположение:</string>
+    <string name="label_company">Компания:</string>
+    <string name="label_email">E-mail:</string>
+    <string name="label_twitter">Twitter:</string>
+    <string name="label_blog">Блог:</string>
+    <string name="label_followers">Подписчики:</string>
+    <string name="label_following">Подписан:</string>
+    <string name="label_created_at">Зарегистрирован:</string>
+</resources>
