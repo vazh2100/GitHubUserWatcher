@@ -17,7 +17,7 @@ interface ApiService {
     fun getUserDetail(@Path("username") login: String?): Single<UserDetailed>
 
     companion object {
-        private const val QUERY_PARAM_TOKEN = "ecf07e7a5fda2e90247a2acee62fa00d49eb379b"
+        private const val QUERY_PARAM_TOKEN = "7f5989106f53860bdac8539a097b935ac8fd80ca"
         private const val QUERY_PARAM_SINCE = "since"
     }
 }

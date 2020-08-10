@@ -55,6 +55,7 @@ class UserAdapter(val context: Context) : RecyclerView.Adapter<UserAdapter.UserV
         with(holder) {
             Picasso.get().load(user.avatarUrl).into(imageViewAvatar)
             textViewLogin.text = user.login
+            textViewId.text = user.id.toString()
             itemView.setOnClickListener {
                 onUserClickListener?.onUserClick(user)
             }
@@ -65,6 +66,7 @@ class UserAdapter(val context: Context) : RecyclerView.Adapter<UserAdapter.UserV
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageViewAvatar = itemView.imageViewAvatar
         val textViewLogin = itemView.textViewLogin
+        val textViewId = itemView.textViewId
     }
 
 }

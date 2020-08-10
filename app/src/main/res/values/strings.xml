@@ -10,4 +10,5 @@
     <string name="label_followers">Подписчики:</string>
     <string name="label_following">Подписан:</string>
     <string name="label_created_at">Зарегистрирован:</string>
+    <string name="label_id">id:</string>
 </resources>
