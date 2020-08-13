@@ -2,6 +2,7 @@ package com.vazheninapps.githubuserwatcher.screens.userlist
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.vazheninapps.githubuserwatcher.api.ApiFactory
@@ -13,7 +14,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 
-class UserListViewModel(application: Application) : AndroidViewModel(application) {
+class UserListViewModel constructor(application: Application) : AndroidViewModel(application) {
 
     private val db = UserDatabase.getInstance(application)
     private val compositeDisposable = CompositeDisposable()
@@ -23,15 +24,25 @@ class UserListViewModel(application: Application) : AndroidViewModel(application
         loadData()
     }
 
-    fun loadData(since:Int = 0) {
-        val disposable: Disposable = ApiFactory
-            .apiService
-            .getUsers(since)
-            .retry()
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                db.userDao().insertUsers(it)},{Log.d("TEST", it.message)})
-        compositeDisposable.add(disposable)
+    fun loadData(since: Int = 0) {
+
+        if (ApiFactory.isInternetConnection(getApplication())) {
+
+            val disposable: Disposable = ApiFactory
+                .apiService
+                .getUsers(since)
+                .retry()
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    db.userDao().insertUsers(it)
+                    Log.d("TEST", it.toString())
+                }, {
+                    Log.d("TEST", it.message)
+                })
+            compositeDisposable.add(disposable)
+        } else {
+            Toast.makeText(getApplication(), "Нет интернет соединения", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCleared() {

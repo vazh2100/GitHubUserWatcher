@@ -1,6 +1,8 @@
 package com.vazheninapps.githubuserwatcher.screens.userdetail
 
 import android.app.Application
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.vazheninapps.githubuserwatcher.api.ApiFactory
@@ -20,13 +22,22 @@ class UserDetailedViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun loadData(login: String) {
-        val disposable: Disposable = ApiFactory
-            .apiService
-            .getUserDetail(login)
-            .retry()
-            .subscribeOn(Schedulers.io())
-            .subscribe({ db.userDao().insertUserDetailed(it) }, {})
-        compositeDisposable.add(disposable)
+
+        if (ApiFactory.isInternetConnection(getApplication())) {
+            val disposable: Disposable = ApiFactory
+                .apiService
+                .getUserDetail(login)
+                .retry()
+                .subscribeOn(Schedulers.io())
+                .subscribe({ db.userDao().insertUserDetailed(it) }, {
+                    Log.d("TEST", it.message)
+
+                })
+            compositeDisposable.add(disposable)
+        } else {
+            Toast.makeText(getApplication(), "Нет интернет соединения", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun onCleared() {
