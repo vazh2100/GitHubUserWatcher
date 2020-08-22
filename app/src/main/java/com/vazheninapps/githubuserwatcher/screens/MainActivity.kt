@@ -8,13 +8,13 @@ import com.vazheninapps.githubuserwatcher.R
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var userViewModel1: UserViewModel
+    lateinit var userViewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        userViewModel1 = ViewModelProvider.AndroidViewModelFactory(application).create(
+        userViewModel = ViewModelProvider.AndroidViewModelFactory(application).create(
             UserViewModel::class.java
         )
 
