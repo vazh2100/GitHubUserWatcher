@@ -1,16 +1,17 @@
 package com.vazheninapps.githubuserwatcher.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 import com.vazheninapps.githubuserwatcher.R
 import com.vazheninapps.githubuserwatcher.pojo.User
 import kotlinx.android.synthetic.main.item_user_simple.view.*
 
-class UserAdapter(val context: Context) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     var onUserClickListener: OnUserClickListener? = null
     var onReachEndListener: OnReachEndListener? = null
@@ -64,9 +65,9 @@ class UserAdapter(val context: Context) : RecyclerView.Adapter<UserAdapter.UserV
     }
 
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageViewAvatar = itemView.imageViewAvatar
-        val textViewLogin = itemView.textViewLogin
-        val textViewId = itemView.textViewId
+        val imageViewAvatar: ShapeableImageView = itemView.imageViewAvatar
+        val textViewLogin: TextView = itemView.textViewLogin
+        val textViewId: TextView = itemView.textViewId
     }
 
 }

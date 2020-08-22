@@ -1,4 +1,4 @@
-package com.vazheninapps.githubuserwatcher.screens.userlist
+package com.vazheninapps.githubuserwatcher.screens
 
 import android.app.Application
 import android.util.Log
@@ -7,24 +7,27 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.vazheninapps.githubuserwatcher.api.ApiFactory
 import com.vazheninapps.githubuserwatcher.database.UserDatabase
-import com.vazheninapps.githubuserwatcher.pojo.User
 import com.vazheninapps.githubuserwatcher.pojo.UserDetailed
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 
-class UserListViewModel constructor(application: Application) : AndroidViewModel(application) {
+class UserViewModel constructor(application: Application) : AndroidViewModel(application) {
 
     private val db = UserDatabase.getInstance(application)
     private val compositeDisposable = CompositeDisposable()
     val userListLD = db.userDao().getUsers()
 
-    init {
-        loadData()
+    fun getUserDetailed(id: Int): LiveData<UserDetailed> {
+        return db.userDao().getUserDetailed(id)
     }
 
-    fun loadData(since: Int = 0) {
+    init {
+        loadUsersData()
+    }
+
+    fun loadUsersData(since: Int = 0) {
 
         if (ApiFactory.isInternetConnection(getApplication())) {
 
@@ -43,6 +46,24 @@ class UserListViewModel constructor(application: Application) : AndroidViewModel
         } else {
             Toast.makeText(getApplication(), "Нет интернет соединения", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun loadUserData(login: String?) {
+
+        if (ApiFactory.isInternetConnection(getApplication())) {
+            val disposable: Disposable = ApiFactory
+                .apiService
+                .getUserDetail(login)
+                .retry()
+                .subscribeOn(Schedulers.io())
+                .subscribe({ db.userDao().insertUserDetailed(it) }, {
+                    Log.d("TEST", it.message)
+                })
+            compositeDisposable.add(disposable)
+        } else {
+            Toast.makeText(getApplication(), "Нет интернет соединения", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun onCleared() {

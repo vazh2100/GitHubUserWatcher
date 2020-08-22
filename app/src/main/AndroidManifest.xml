@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".screens.userdetail.UserDetailedActivity"></activity>
-        <activity android:name=".screens.userlist.UserListActivity">
+        <activity android:name="com.vazheninapps.githubuserwatcher.screens.fragments.userdetail.UserDetailedActivity"></activity>
+        <activity android:name=".screens.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
