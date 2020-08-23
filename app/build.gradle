@@ -53,6 +53,7 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:2.2.0"
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
 
+
     def room_version = "2.2.5"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -61,14 +62,12 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.android.material:material:1.2.0'
-
+    implementation "com.airbnb.android:lottie:3.4.1"
 
 
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
     implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.0"
-
-
 
 
     testImplementation 'junit:junit:4.13'
