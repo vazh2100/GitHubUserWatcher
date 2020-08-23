@@ -2,16 +2,18 @@ package com.vazheninapps.githubuserwatcher.api
 
 import com.vazheninapps.githubuserwatcher.pojo.User
 import com.vazheninapps.githubuserwatcher.pojo.UserDetailed
-import io.reactivex.Observable
 import io.reactivex.Single
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface ApiService {
 
     @Headers("Authorization: token $QUERY_PARAM_TOKEN")
     @GET("users")
-    fun getUsers(@Query(QUERY_PARAM_SINCE) since: Int): Observable<List<User>>
+    fun getUsers(@Query(QUERY_PARAM_SINCE) since: Int): Single<List<User>>
 
     @Headers("Authorization: token $QUERY_PARAM_TOKEN")
     @GET("/users/{username}")
