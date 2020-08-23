@@ -1,24 +1,19 @@
 package com.vazheninapps.githubuserwatcher.screens
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
+
+import androidx.navigation.fragment.findNavController
+
+import androidx.fragment.app.FragmentActivity
+
 import com.vazheninapps.githubuserwatcher.R
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
 
-    lateinit var userViewModel: UserViewModel
+class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        userViewModel = ViewModelProvider.AndroidViewModelFactory(application).create(
-            UserViewModel::class.java
-        )
-
     }
-    override fun onSupportNavigateUp() = findNavController(R.id.fragment).navigateUp()
-
 }

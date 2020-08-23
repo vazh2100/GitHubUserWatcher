@@ -10,22 +10,31 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.squareup.picasso.Picasso
 import com.vazheninapps.githubuserwatcher.R
-
 import com.vazheninapps.githubuserwatcher.screens.UserViewModel
 import kotlinx.android.synthetic.main.fragment_user_detailed.*
 
+
 class UserDetailedFragment : Fragment() {
+    private val viewModel: UserViewModel by navGraphViewModels(R.id.main_graph)
 
-    val viewModel: UserViewModel by navGraphViewModels(R.id.navigation)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_user_detailed, container, false)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.isLoading.observe(viewLifecycleOwner,  Observer {
+            when (it) {
+                true -> progressBarLoading.visibility = View.VISIBLE
+                false -> progressBarLoading.visibility = View.INVISIBLE
+            }
+        })
 
         arguments?.let {
             val id = it.getInt(EXTRA_ID)
             val login = it.getString(EXTRA_LOGIN)
-            viewModel.loadUserData(login)
-            viewModel.getUserDetailed(id).observe(this, Observer {
+            viewModel.loadUserDetailed(login)
+            viewModel.getUserDetailed(id).observe(viewLifecycleOwner, Observer {
                 it?.let {
                     textViewLogin.text = it.login
                     textViewName.text = it.name
@@ -43,15 +52,9 @@ class UserDetailedFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_user_detailed, container, false)
-    }
-
-
     companion object {
         private const val EXTRA_ID = "id"
         private const val EXTRA_LOGIN = "login"
-
 
         fun goTo(fragment: Fragment, id: Int, login: String) {
             val bundle = Bundle()

@@ -17,7 +17,6 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     var onReachEndListener: OnReachEndListener? = null
     private var userList: List<User> = arrayListOf()
 
-
     interface OnUserClickListener {
         fun onUserClick(user: User)
     }
@@ -25,7 +24,6 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     interface OnReachEndListener {
         fun onReachEnd()
     }
-
 
     fun getUserList(): List<User> {
         return userList
@@ -35,7 +33,6 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
         this.userList = userList
         notifyDataSetChanged()
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view =
