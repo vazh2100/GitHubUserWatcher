@@ -1,7 +1,7 @@
 # GitHubUserWatcher
 
 
-![Иллюстрация к проекту](https://github.com/vazh2100/GitHubUserWatcher/raw/master/image/image.png)
+![Иллюстрация к проекту](https://github.com/vazh2100/GitHubUserWatcher/raw/master/image/Screenshot_20200823-094543_GitHubUserWatcher.png)
 
 Тестовое задание от работодателя. Отображение информации о пользователях с сайта github.com
 
