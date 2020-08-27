@@ -4,6 +4,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="32dp"
                 app:cardBackgroundColor="@color/card_background"
@@ -53,15 +54,27 @@
                         app:strokeWidth="1dp"
                         tools:srcCompat="@tools:sample/avatars" />
 
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonLogOut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/neucha"
+                        android:text="@string/log_out"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/view"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
                     <TextView
                         android:id="@+id/textViewLogin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
                         android:fontFamily="@font/neucha"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="30sp"
                         app:layout_constraintBottom_toBottomOf="@+id/imageViewAvatar"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageViewAvatar"
                         app:layout_constraintTop_toTopOf="@+id/imageViewAvatar"
                         tools:text="justdoiter" />
@@ -149,13 +162,72 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvLabelCompany" />
 
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view3">
+
+
+                        <TextView
+                            android:id="@+id/tvLabelBio"
+                            style="@style/Label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_biography"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <com.ms.square.android.expandabletextview.ExpandableTextView
+
+                            android:id="@+id/expandableTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            expandableTextView:animDuration="200"
+                            expandableTextView:maxCollapsedLines="1">
+
+                            <TextView
+                                android:id="@id/expandable_text"
+                                style="@style/Value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                tools:text="mmmmmm" />
+
+                            <ImageButton
+                                android:id="@id/expand_collapse"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|end"
+                                android:background="@android:color/transparent"
+                                android:padding="16dp"
+                                tools:ignore="ContentDescription" />
+
+                        </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view9"
+                        style="@style/Separator"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
                     <TextView
                         android:id="@+id/tvLabelEmail"
                         style="@style/Label"
                         android:layout_marginTop="8dp"
                         android:text="@string/label_email"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view3" />
+                        app:layout_constraintTop_toBottomOf="@+id/view9" />
 
                     <TextView
                         android:id="@+id/textViewEmail"
@@ -302,6 +374,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvLabelCreatedAt"
                         tools:text="25.10.12" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
