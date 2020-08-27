@@ -3,7 +3,6 @@ package com.vazheninapps.githubuserwatcher.pojo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
-
 import com.google.gson.annotations.SerializedName
 
 
@@ -57,7 +56,12 @@ data class UserDetailed(
 
     @SerializedName("created_at")
     @Expose
-    val createdAt: String? = null
+    val createdAt: String? = null,
+    @SerializedName("bio")
+    @Expose
+   private val bio:String? = null
+
+
 
 ) {
 
@@ -66,4 +70,5 @@ data class UserDetailed(
     fun getLocation(): String? = location ?: "Отсутствует"
     fun getEmail(): String? = email ?: "Отсутствует"
     fun getTwitterUsername(): String? = twitterUsername ?: "Отсутствует"
+    fun getBio():String? = bio ?: "Отсутствует"
 }

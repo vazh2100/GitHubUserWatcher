@@ -7,6 +7,78 @@
     android:layout_height="match_parent"
     tools:context=".screens.fragments.UserListFragment">
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardViewUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:clickable="true"
+        app:cardBackgroundColor="@color/card_background"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewUsers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/stroke_color"
+        app:strokeWidth="1dp"
+        android:focusable="true">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="6dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageViewAvatar"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:contentDescription="@string/con_desc_user_avatar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/stroke_color"
+                app:strokeWidth="1dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/textViewLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="@font/neucha"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="27sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewAvatar"
+                app:layout_constraintStart_toEndOf="@+id/imageViewAvatar"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="login" />
+
+            <TextView
+                android:id="@+id/tvLabelId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:fontFamily="@font/neucha"
+                android:text="@string/label_id"
+                android:typeface="normal"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewId"
+                app:layout_constraintEnd_toStartOf="@+id/textViewId"
+                app:layout_constraintTop_toTopOf="@+id/textViewId" />
+
+            <TextView
+                android:id="@+id/textViewId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/neucha"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="10" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUsers"
         android:layout_width="0dp"
@@ -15,7 +87,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/materialCardViewUser" />
 
     <ProgressBar
         android:id="@+id/progressBarLoading"

@@ -3,12 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/main_graph"
+    app:startDestination="@id/loginFragment"
     >
 
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.vazheninapps.githubuserwatcher.screens.fragments.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_main_graph"
+            app:destination="@id/main_graph"
+            app:enterAnim="@android:anim/slide_in_left" />
+    </fragment>
+
     <navigation android:id="@+id/main_graph"
-        app:startDestination="@id/userListFragment"
-        >
+        app:startDestination="@id/userListFragment">
         <fragment
             android:id="@+id/userListFragment"
             android:name="com.vazheninapps.githubuserwatcher.screens.fragments.UserListFragment"
@@ -24,6 +33,12 @@
             android:id="@+id/userDetailedFragment"
             android:name="com.vazheninapps.githubuserwatcher.screens.fragments.UserDetailedFragment"
             android:label="fragment_user_detailed"
-            tools:layout="@layout/fragment_user_detailed" />
+            tools:layout="@layout/fragment_user_detailed" >
+            <action
+                android:id="@+id/action_userDetailedFragment_to_loginFragment"
+                app:destination="@id/loginFragment"
+                app:enterAnim="@android:anim/slide_in_left" />
+        </fragment>
+
     </navigation>
 </navigation>
