@@ -61,6 +61,7 @@ class UserViewModel constructor(application: Application) : AndroidViewModel(app
                     isLoading.postValue(false)
                    }, {
                     Log.d("TEST", it.message)
+
                 })
             compositeDisposable.add(disposable)
         } else {
