@@ -25,7 +25,6 @@ class LoginFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(LoginViewModel::class.java)
         setListenerOnLoginButton()
         observeLoginSuccess()
-
     }
 
     private fun skipLoginIfLogged(){
