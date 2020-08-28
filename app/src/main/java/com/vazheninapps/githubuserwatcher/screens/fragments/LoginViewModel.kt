@@ -2,6 +2,8 @@ package com.vazheninapps.githubuserwatcher.screens.fragments
 
 import android.app.Application
 import android.content.Context
+import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -23,7 +25,7 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
 
     fun basicLogin(context: Context, login: String, password: String): Boolean {
         if (ApiFactory.isInternetConnection(getApplication())) {
-            val disposable = ApiFactory(login, password)
+            val disposable = ApiFactory.getFactoryWithCredentials(login,password)
                 .loginService!!
                 .createAuthorizationToken(AuthBody.generate())
                 .subscribeOn(Schedulers.io())
@@ -69,6 +71,39 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
         }
 
     }
+
+    fun handleAuthByWeb(context: Context, fromWebUri: String){
+      val uri = Uri.parse(fromWebUri)
+
+        uri?.let{
+            val code = uri.getQueryParameter("code")
+            val state = uri.getQueryParameter("state")
+
+            if (ApiFactory.isInternetConnection(getApplication())) {
+                val disposable = ApiFactory
+                    .getNotApiFactory()
+                    .loginService!!
+                    .loadWebToken(AuthBody.CLIENT_ID, AuthBody.CLIENT_SECRET, code, state)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({
+                        Log.d("111222", it.toString())
+                        if (it.body() != null) {
+                            LoggedUser.token = "token " + it.body()!!.accessToken
+                            context.getSharedPreferences("main", Context.MODE_PRIVATE).edit()
+                                .putString("token", LoggedUser.token).apply()
+                            isLoginSuccess.postValue(true)
+                        } else {
+                            isLoginSuccess.postValue(false)
+                        }
+                    }, {
+                        isLoginSuccess.postValue(false)
+                    })
+                compositeDisposable.add(disposable)
+            } else {
+                Toast.makeText(getApplication(), "Нет интернет соединения", Toast.LENGTH_SHORT).show()
+            }
+
+    }}
 
     override fun onCleared() {
         super.onCleared()

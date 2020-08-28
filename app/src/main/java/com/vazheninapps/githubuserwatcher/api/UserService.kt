@@ -11,15 +11,16 @@ import retrofit2.http.Query
 interface UserService {
 
     @GET("user")
-    fun getLoggedUser(@Header("Authorization") token:String? ):Single<UserDetailed>
+    fun getLoggedUser(@Header(HEADER_PARAM_AUTORIZATION) token:String? ):Single<UserDetailed>
 
     @GET("users")
-    fun getUsers(@Query(QUERY_PARAM_SINCE) since: Int, @Header("Authorization") token:String? ): Single<List<User>>
+    fun getUsers(@Query(QUERY_PARAM_SINCE) since: Int, @Header(HEADER_PARAM_AUTORIZATION) token:String? ): Single<List<User>>
 
     @GET("/users/{username}")
-    fun getUserDetail(@Path("username") login: String?, @Header("Authorization") token:String?): Single<UserDetailed>
+    fun getUserDetail(@Path("username") login: String?, @Header(HEADER_PARAM_AUTORIZATION) token:String?): Single<UserDetailed>
 
     companion object {
         private const val QUERY_PARAM_SINCE = "since"
+        private const val HEADER_PARAM_AUTORIZATION = "Authorization"
     }
 }

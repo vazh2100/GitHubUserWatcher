@@ -26,4 +26,5 @@
     <string name="test_password">cW23ERdeAQ12S</string>
     <string name="log_out">Выйти</string>
     <string name="label_biography">Биография:</string>
+    <string name="login_web"><a href="http://developer.alexanderklimov.ru/">Войти через web browser</a></string>
 </resources>

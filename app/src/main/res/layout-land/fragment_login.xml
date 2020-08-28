@@ -51,20 +51,29 @@
                 android:orientation="vertical">
 
 
+                <ProgressBar
+                    android:id="@+id/progressBarLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:focusable="true"
+                    android:visibility="invisible" />
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextLogin"
                     style="@style/Value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:ems="10"
                     android:hint="@string/hint_enter_login"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
+                    android:text="@string/test_login"
                     tools:layout_editor_absoluteX="73dp"
-                    tools:layout_editor_absoluteY="249dp"
-                    android:text="@string/test_login"/>
+                    tools:layout_editor_absoluteY="249dp" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextPassword"
@@ -83,20 +92,21 @@
                     android:layout_width="223dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="8dp"
                     android:elegantTextHeight="true"
                     android:enabled="true"
                     android:fontFamily="@font/neucha"
                     android:text="@string/log_in" />
 
-                <ProgressBar
-                    android:id="@+id/progressBarLoading"
+                <TextView
+                    android:id="@+id/textViewWebLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
                     android:focusable="true"
-                    android:visibility="invisible" />
+                    android:text="@string/login_web" />
             </LinearLayout>
 
         </LinearLayout>

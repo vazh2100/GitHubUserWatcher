@@ -1,11 +1,13 @@
 package com.vazheninapps.githubuserwatcher.screens
 
 import android.animation.Animator
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import com.vazheninapps.githubuserwatcher.R
 import com.vazheninapps.githubuserwatcher.database.LoggedUser
 import com.vazheninapps.githubuserwatcher.screens.fragments.LoginFragment
@@ -15,6 +17,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : FragmentActivity() {
 
     private var isFirst = true
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.loginFragment) {
+            val bundle = Bundle()
+            bundle.putString("uri", intent?.dataString)
+            findNavController(R.id.nav_host_fragment).navigate(R.id.loginFragment, bundle)
+            setIntent(null)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

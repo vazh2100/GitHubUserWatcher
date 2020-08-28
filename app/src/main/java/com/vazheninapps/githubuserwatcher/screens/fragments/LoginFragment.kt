@@ -1,5 +1,7 @@
 package com.vazheninapps.githubuserwatcher.screens.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +11,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.vazheninapps.githubuserwatcher.R
+import com.vazheninapps.githubuserwatcher.api.AuthBody
 import com.vazheninapps.githubuserwatcher.database.LoggedUser
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
     private lateinit var viewModel: LoginViewModel
+
+    override fun onResume() {
+        super.onResume()
+        arguments?.let {
+            if(it.containsKey("uri")){
+            buttonLogin.isEnabled = false
+            progressBarLoading.visibility = View.VISIBLE
+            viewModel.handleAuthByWeb(requireActivity(), it.getString("uri", ""))}
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
@@ -23,7 +36,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         skipLoginIfLogged()
         viewModel = ViewModelProvider(requireActivity()).get(LoginViewModel::class.java)
-        setListenerOnLoginButton()
+        setListenersOnButtons()
         observeLoginSuccess()
     }
 
@@ -34,7 +47,7 @@ class LoginFragment : Fragment() {
     }
 
 
-   private fun setListenerOnLoginButton(){
+   private fun setListenersOnButtons(){
        buttonLogin.setOnClickListener {
            val login = editTextLogin.text.toString().trim()
            val password = editTextPassword.text.toString()
@@ -49,6 +62,9 @@ class LoginFragment : Fragment() {
            } else {
                buttonLogin.isEnabled = true
            }
+       }
+       textViewWebLogin.setOnClickListener {
+           startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AuthBody.getUrlToWebAuth())).addCategory(Intent.CATEGORY_BROWSABLE).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
        }
 
    }
@@ -72,6 +88,7 @@ class LoginFragment : Fragment() {
     }
 
    private fun observeLoginSuccess(){
+
        viewModel.isUserSuccess.value = null
        viewModel.isLoginSuccess.value = null
        viewModel.isUserSuccess.observe(requireActivity(), {
@@ -95,7 +112,7 @@ class LoginFragment : Fragment() {
                    viewModel.loadLoggedUser(requireActivity())
                } else {
                    progressBarLoading?.visibility = View.GONE
-                   buttonLogin.isEnabled = true
+                   buttonLogin?.isEnabled = true
                    showToast("Неправильный логин или пароль")
                }
            }
@@ -106,6 +123,7 @@ class LoginFragment : Fragment() {
     private fun showToast(message: String) {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
     }
+
 
 
 }
