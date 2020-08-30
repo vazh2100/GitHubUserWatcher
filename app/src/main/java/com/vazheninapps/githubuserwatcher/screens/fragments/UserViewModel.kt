@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.vazheninapps.githubuserwatcher.api.ApiFactory
 import com.vazheninapps.githubuserwatcher.database.LoggedUser
 import com.vazheninapps.githubuserwatcher.database.UserDatabase
+import com.vazheninapps.githubuserwatcher.pojo.User
 import com.vazheninapps.githubuserwatcher.pojo.UserDetailed
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -19,11 +20,19 @@ class UserViewModel constructor(application: Application) : AndroidViewModel(app
 
     private val db = UserDatabase.getInstance(application)
     private val compositeDisposable = CompositeDisposable()
-    val userListLD = db.userDao().getUsers()
+    private val userListLD by lazy {db.userDao().getUsers().also {loadUsers()} }
+
+   fun getUsers():LiveData<List<User>> {
+       return  userListLD
+   }
+
     var isLoading = MutableLiveData<Boolean>()
 
-    fun getUserDetailed(id: Int?): LiveData<UserDetailed> {
+    fun getLoggedUser(id: Int?): LiveData<UserDetailed> {
         return db.userDao().getUserDetailed(id)
+    }
+    fun getUserDetailed(id: Int?, login:String?): LiveData<UserDetailed> {
+        return db.userDao().getUserDetailed(id).also {loadUserDetailed(login) }
     }
 
     fun loadUsers(since: Int = 0) {
@@ -48,7 +57,7 @@ class UserViewModel constructor(application: Application) : AndroidViewModel(app
         }
     }
 
-    fun loadUserDetailed(login: String?) {
+   private fun loadUserDetailed(login: String?) {
         if (ApiFactory.isInternetConnection(getApplication())) {
             isLoading.value = true
             val disposable: Disposable = ApiFactory

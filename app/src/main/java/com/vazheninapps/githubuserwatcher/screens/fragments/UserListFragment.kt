@@ -50,11 +50,19 @@ class UserListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.userListLD.observe(viewLifecycleOwner,  {
+
+        viewModel.isLoading.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> progressBarLoading.visibility = View.VISIBLE
+                false -> progressBarLoading.visibility = View.INVISIBLE
+            }
+        })
+
+        viewModel.getUsers().observe(viewLifecycleOwner,  {
             adapter.setUserList(it)
         })
 
-        viewModel.getUserDetailed(LoggedUser.id).observe(viewLifecycleOwner, {
+        viewModel.getLoggedUser(LoggedUser.id).observe(viewLifecycleOwner, {
             if (it != null) {
                 val login = it.login
                 val id = it.id
@@ -67,12 +75,6 @@ class UserListFragment : Fragment() {
             }
         })
 
-        viewModel.isLoading.observe(viewLifecycleOwner, {
-            when (it) {
-                true -> progressBarLoading.visibility = View.VISIBLE
-                false -> progressBarLoading.visibility = View.INVISIBLE
-            }
-        })
-        viewModel.loadUsers()
+
     }
 }

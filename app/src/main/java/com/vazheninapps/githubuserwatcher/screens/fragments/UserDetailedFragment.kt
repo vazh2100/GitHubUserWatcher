@@ -33,8 +33,7 @@ class UserDetailedFragment : Fragment() {
         arguments?.let { bundle ->
             val id = bundle.getInt(EXTRA_ID)
             val login = bundle.getString(EXTRA_LOGIN)
-            viewModel.loadUserDetailed(login)
-            viewModel.getUserDetailed(id).observe(viewLifecycleOwner,  {
+            viewModel.getUserDetailed(id,login).observe(viewLifecycleOwner,  {
                 it?.let {
                     textViewLogin.text = it.login
                     textViewName.text = it.name
