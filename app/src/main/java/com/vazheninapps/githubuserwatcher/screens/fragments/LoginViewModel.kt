@@ -3,9 +3,8 @@ package com.vazheninapps.githubuserwatcher.screens.fragments
 import android.app.Application
 import android.content.Context
 import android.net.Uri
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vazheninapps.githubuserwatcher.api.ApiFactory
 import com.vazheninapps.githubuserwatcher.api.AuthBody
@@ -18,62 +17,47 @@ import io.reactivex.schedulers.Schedulers
 
 class LoginViewModel constructor(application: Application) : AndroidViewModel(application) {
 
-    private val db = UserDatabase.getInstance(application)
-    private val compositeDisposable = CompositeDisposable()
-    val isLoginSuccess = MutableLiveData<Boolean>()
-    val isUserSuccess = MutableLiveData<Boolean>()
+    private val db by lazy { UserDatabase.getInstance(application) }
+    private val compositeDisposable by lazy {CompositeDisposable()}
+    private val isLoginSuccess by lazy { MutableLiveData<Boolean>() }
 
-    fun basicLogin(context: Context, login: String, password: String): Boolean {
+    private val errors by lazy { MutableLiveData<String>() }
+
+    fun getErrors ():LiveData<String>{
+       return errors.also {errors.value = null }
+   }
+
+    fun getIsLoginSuccess():LiveData<Boolean>{
+        return isLoginSuccess.also{isLoginSuccess.value = null}
+    }
+
+    fun basicLogin(context: Context, login: String, password: String) {
         if (ApiFactory.isInternetConnection(getApplication())) {
-            val disposable = ApiFactory.getFactoryWithCredentials(login,password)
+            val disposable = ApiFactory
+                .getFactoryWithCredentials(login,password)
                 .loginService!!
                 .createAuthorizationToken(AuthBody.generate())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     if (it.body() != null) {
                         LoggedUser.token = "token " + it.body()!!.token
-                        context.getSharedPreferences("main", Context.MODE_PRIVATE).edit()
-                            .putString("token", LoggedUser.token).apply()
-                        isLoginSuccess.postValue(true)
+                        context.getSharedPreferences("main", Context.MODE_PRIVATE).edit().putString("token", LoggedUser.token).apply()
+                        loadLoggedUser(context)
                     } else {
-                        isLoginSuccess.postValue(false)
+                        errors.postValue("Неправильный логин или пароль")
                     }
                 }, {
-                    isLoginSuccess.postValue(false)
-                })
-            compositeDisposable.add(disposable)
-            return true
-        } else {
-            Toast.makeText(getApplication(), "Нет интернет соединения", Toast.LENGTH_SHORT).show()
-            return false
-        }
-    }
-
-    fun loadLoggedUser(context: Context) {
-        if (ApiFactory.isInternetConnection(getApplication())) {
-            val disposable: Disposable = ApiFactory
-                .getInstance()
-                .userService!!
-                .getLoggedUser(LoggedUser.token)
-                .retry()
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    db.userDao().insertUserDetailed(it)
-                    LoggedUser.id = it.id
-                    context.getSharedPreferences("main", Context.MODE_PRIVATE).edit()
-                        .putInt("id", LoggedUser.id!!).apply()
-                    isUserSuccess.postValue(true)
-                }, {
+                    errors.postValue("Не удалось установить соединение с сервером")
                 })
             compositeDisposable.add(disposable)
         } else {
-            Toast.makeText(getApplication(), "Нет интернет соединения", Toast.LENGTH_SHORT).show()
+            errors.value = "Нет интернет соединения"
         }
-
     }
+
 
     fun handleAuthByWeb(context: Context, fromWebUri: String){
-      val uri = Uri.parse(fromWebUri)
+        val uri = Uri.parse(fromWebUri)
 
         uri?.let{
             val code = uri.getQueryParameter("code")
@@ -86,24 +70,44 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
                     .loadWebToken(AuthBody.CLIENT_ID, AuthBody.CLIENT_SECRET, code, state)
                     .subscribeOn(Schedulers.io())
                     .subscribe({
-                        Log.d("111222", it.toString())
                         if (it.body() != null) {
                             LoggedUser.token = "token " + it.body()!!.accessToken
-                            context.getSharedPreferences("main", Context.MODE_PRIVATE).edit()
-                                .putString("token", LoggedUser.token).apply()
-                            isLoginSuccess.postValue(true)
+                            context.getSharedPreferences("main", Context.MODE_PRIVATE).edit().putString("token", LoggedUser.token).apply()
+                            loadLoggedUser(context)
                         } else {
-                            isLoginSuccess.postValue(false)
+                            errors.postValue("Неправильный логин или пароль")
                         }
                     }, {
-                        isLoginSuccess.postValue(false)
+                        errors.postValue("Не удалось установить соединение с сервером")
                     })
                 compositeDisposable.add(disposable)
             } else {
-                Toast.makeText(getApplication(), "Нет интернет соединения", Toast.LENGTH_SHORT).show()
+                errors.value = "Нет интернет соединения"
             }
 
-    }}
+        }}
+
+   private fun loadLoggedUser(context: Context) {
+        if (ApiFactory.isInternetConnection(getApplication())) {
+            val disposable: Disposable = ApiFactory
+                .getInstance()
+                .userService!!
+                .getLoggedUser(LoggedUser.token)
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    db.userDao().insertUserDetailed(it)
+                    LoggedUser.id = it.id
+                    context.getSharedPreferences("main", Context.MODE_PRIVATE).edit().putInt("id", LoggedUser.id!!).apply()
+                    isLoginSuccess.postValue(true)
+                }, {
+                    errors.postValue("Не удалось загрузить данные о пользователе")
+                })
+            compositeDisposable.add(disposable)
+        } else {
+            errors.value = "Нет интернет соединения"
+        }
+
+    }
 
     override fun onCleared() {
         super.onCleared()

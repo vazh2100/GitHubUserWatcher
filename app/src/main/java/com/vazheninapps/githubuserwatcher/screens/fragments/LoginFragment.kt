@@ -51,16 +51,11 @@ class LoginFragment : Fragment() {
        buttonLogin.setOnClickListener {
            val login = editTextLogin.text.toString().trim()
            val password = editTextPassword.text.toString()
+
            if (isLoginInfoCorrect(login, password)) {
                buttonLogin.isEnabled = false
                progressBarLoading.visibility = View.VISIBLE
-             val connection =  viewModel.basicLogin(requireActivity(), login, password)
-               if(!connection){
-                   buttonLogin.isEnabled = true
-                   progressBarLoading.visibility = View.GONE
-               }
-           } else {
-               buttonLogin.isEnabled = true
+               viewModel.basicLogin(requireActivity(), login, password)
            }
        }
        textViewWebLogin.setOnClickListener {
@@ -88,36 +83,18 @@ class LoginFragment : Fragment() {
     }
 
    private fun observeLoginSuccess(){
-
-       viewModel.isUserSuccess.value = null
-       viewModel.isLoginSuccess.value = null
-       viewModel.isUserSuccess.observe(requireActivity(), {
-           it?.let {
-               if (it) {
-                   if (findNavController().currentDestination?.id == R.id.loginFragment) {
-                       findNavController().navigate(R.id.action_loginFragment_to_main_graph)
-                   }
-               } else {
-                   progressBarLoading?.visibility = View.GONE
-                   buttonLogin.isEnabled = true
-                   showToast("Не удалось загрузить информацию о пользователе. Попробуйте снова")
-               }
-           }
-
+       viewModel.getErrors().observe(requireActivity(), {
+           it?.let{showToast(it)
+               buttonLogin.isEnabled = true
+               progressBarLoading.visibility = View.GONE}
        })
-       viewModel.isLoginSuccess.observe(requireActivity(), {
-           it?.let {
-               if (it) {
-                   progressBarLoading?.visibility = View.GONE
-                   viewModel.loadLoggedUser(requireActivity())
-               } else {
-                   progressBarLoading?.visibility = View.GONE
-                   buttonLogin?.isEnabled = true
-                   showToast("Неправильный логин или пароль")
+       viewModel.getIsLoginSuccess().observe(requireActivity(),{
+           it?.let{
+               if (it && findNavController().currentDestination?.id == R.id.loginFragment ){
+                   findNavController().navigate(R.id.action_loginFragment_to_main_graph)
                }
            }
        })
-
    }
 
     private fun showToast(message: String) {
