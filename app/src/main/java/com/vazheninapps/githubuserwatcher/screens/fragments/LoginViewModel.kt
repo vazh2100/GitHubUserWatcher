@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.vazheninapps.githubuserwatcher.R
 import com.vazheninapps.githubuserwatcher.api.ApiFactory
 import com.vazheninapps.githubuserwatcher.api.AuthBody
 import com.vazheninapps.githubuserwatcher.database.LoggedUser
@@ -44,14 +45,14 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
                         context.getSharedPreferences("main", Context.MODE_PRIVATE).edit().putString("token", LoggedUser.token).apply()
                         loadLoggedUser(context)
                     } else {
-                        errors.postValue("Неправильный логин или пароль")
+                        errors.postValue(context.getString(R.string.message_wrong_login_or_password))
                     }
                 }, {
-                    errors.postValue("Не удалось установить соединение с сервером")
+                    errors.postValue(context.getString(R.string.message_failed_connect_to_server))
                 })
             compositeDisposable.add(disposable)
         } else {
-            errors.value = "Нет интернет соединения"
+            errors.value = context.getString(R.string.message_no_internet_connection)
         }
     }
 
@@ -75,14 +76,14 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
                             context.getSharedPreferences("main", Context.MODE_PRIVATE).edit().putString("token", LoggedUser.token).apply()
                             loadLoggedUser(context)
                         } else {
-                            errors.postValue("Неправильный логин или пароль")
+                            errors.postValue(context.getString(R.string.message_failed_get_token))
                         }
                     }, {
-                        errors.postValue("Не удалось установить соединение с сервером")
+                        errors.postValue(context.getString(R.string.message_failed_connect_to_server))
                     })
                 compositeDisposable.add(disposable)
             } else {
-                errors.value = "Нет интернет соединения"
+                errors.value = context.getString(R.string.message_no_internet_connection)
             }
 
         }}
@@ -100,11 +101,11 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
                     context.getSharedPreferences("main", Context.MODE_PRIVATE).edit().putInt("id", LoggedUser.id!!).apply()
                     isLoginSuccess.postValue(true)
                 }, {
-                    errors.postValue("Не удалось загрузить данные о пользователе")
+                    errors.postValue(context.getString(R.string.failed_to_load_logged_user))
                 })
             compositeDisposable.add(disposable)
         } else {
-            errors.value = "Нет интернет соединения"
+            errors.value = context.getString(R.string.message_no_internet_connection)
         }
 
     }

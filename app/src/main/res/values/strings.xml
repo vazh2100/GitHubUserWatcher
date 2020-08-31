@@ -27,4 +27,9 @@
     <string name="log_out">Выйти</string>
     <string name="label_biography">Биография:</string>
     <string name="login_web"><a href="http://developer.alexanderklimov.ru/">Войти через web browser</a></string>
+    <string name="message_wrong_login_or_password">Неправильный логин или пароль</string>
+    <string name="message_failed_connect_to_server">Не удалось установить соединение с сервером</string>
+    <string name="message_no_internet_connection">Нет интернет соединения</string>
+    <string name="message_failed_get_token">Не удалось получить токен авторизации</string>
+    <string name="failed_to_load_logged_user">Не удалось загрузить данные о пользователе</string>
 </resources>
