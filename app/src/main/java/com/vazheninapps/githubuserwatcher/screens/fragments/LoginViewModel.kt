@@ -22,10 +22,10 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
     private val compositeDisposable by lazy {CompositeDisposable()}
     private val isLoginSuccess by lazy { MutableLiveData<Boolean>() }
 
-    private val errors by lazy { MutableLiveData<String>() }
+    private val errorsLD by lazy { MutableLiveData<String>() }
 
     fun getErrors ():LiveData<String>{
-       return errors.also {errors.value = null }
+       return errorsLD.also {errorsLD.value = null }
    }
 
     fun getIsLoginSuccess():LiveData<Boolean>{
@@ -45,14 +45,14 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
                         context.getSharedPreferences("main", Context.MODE_PRIVATE).edit().putString("token", LoggedUser.token).apply()
                         loadLoggedUser(context)
                     } else {
-                        errors.postValue(context.getString(R.string.message_wrong_login_or_password))
+                        errorsLD.postValue(context.getString(R.string.message_wrong_login_or_password))
                     }
                 }, {
-                    errors.postValue(context.getString(R.string.message_failed_connect_to_server))
+                    errorsLD.postValue(context.getString(R.string.message_failed_connect_to_server))
                 })
             compositeDisposable.add(disposable)
         } else {
-            errors.value = context.getString(R.string.message_no_internet_connection)
+            errorsLD.value = context.getString(R.string.message_no_internet_connection)
         }
     }
 
@@ -76,14 +76,14 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
                             context.getSharedPreferences("main", Context.MODE_PRIVATE).edit().putString("token", LoggedUser.token).apply()
                             loadLoggedUser(context)
                         } else {
-                            errors.postValue(context.getString(R.string.message_failed_get_token))
+                            errorsLD.postValue(context.getString(R.string.message_failed_get_token))
                         }
                     }, {
-                        errors.postValue(context.getString(R.string.message_failed_connect_to_server))
+                        errorsLD.postValue(context.getString(R.string.message_failed_connect_to_server))
                     })
                 compositeDisposable.add(disposable)
             } else {
-                errors.value = context.getString(R.string.message_no_internet_connection)
+                errorsLD.value = context.getString(R.string.message_no_internet_connection)
             }
 
         }}
@@ -101,11 +101,11 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
                     context.getSharedPreferences("main", Context.MODE_PRIVATE).edit().putInt("id", LoggedUser.id!!).apply()
                     isLoginSuccess.postValue(true)
                 }, {
-                    errors.postValue(context.getString(R.string.failed_to_load_logged_user))
+                    errorsLD.postValue(context.getString(R.string.failed_to_load_logged_user))
                 })
             compositeDisposable.add(disposable)
         } else {
-            errors.value = context.getString(R.string.message_no_internet_connection)
+            errorsLD.value = context.getString(R.string.message_no_internet_connection)
         }
 
     }
