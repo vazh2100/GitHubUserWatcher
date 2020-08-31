@@ -71,7 +71,7 @@ class LoginViewModel constructor(application: Application) : AndroidViewModel(ap
                     .loadWebToken(AuthBody.CLIENT_ID, AuthBody.CLIENT_SECRET, code, state)
                     .subscribeOn(Schedulers.io())
                     .subscribe({
-                        if (it.body() != null) {
+                        if (it.body()?.accessToken != null) {
                             LoggedUser.token = "token " + it.body()!!.accessToken
                             context.getSharedPreferences("main", Context.MODE_PRIVATE).edit().putString("token", LoggedUser.token).apply()
                             loadLoggedUser(context)

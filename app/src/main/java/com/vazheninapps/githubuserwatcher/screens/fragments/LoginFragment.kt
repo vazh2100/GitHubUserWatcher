@@ -85,8 +85,8 @@ class LoginFragment : Fragment() {
    private fun observeLoginSuccess(){
        viewModel.getErrors().observe(requireActivity(), {
            it?.let{showToast(it)
-               buttonLogin.isEnabled = true
-               progressBarLoading.visibility = View.GONE}
+               buttonLogin?.isEnabled = true
+               progressBarLoading?.visibility = View.GONE}
        })
        viewModel.getIsLoginSuccess().observe(requireActivity(),{
            it?.let{
