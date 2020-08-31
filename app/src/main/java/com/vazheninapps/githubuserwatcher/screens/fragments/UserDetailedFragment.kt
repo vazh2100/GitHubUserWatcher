@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
@@ -19,22 +20,21 @@ class UserDetailedFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_user_detailed, container, false)
     }
-
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.isLoading.observe(viewLifecycleOwner,  {
-            when (it) {
-                true -> progressBarLoading.visibility = View.VISIBLE
-                false -> progressBarLoading.visibility = View.INVISIBLE
-            }
+        viewModel.getErrors().observe(viewLifecycleOwner, {
+            it?.let{
+                showToast(it)
+                progressBarLoading.visibility = View.GONE}
         })
 
         arguments?.let { bundle ->
             val id = bundle.getInt(EXTRA_ID)
             val login = bundle.getString(EXTRA_LOGIN)
+            progressBarLoading.visibility = View.VISIBLE
             viewModel.getUserDetailed(id,login).observe(viewLifecycleOwner,  {
                 it?.let {
+                    progressBarLoading.visibility = View.GONE
                     textViewLogin.text = it.login
                     textViewName.text = it.name
                     textViewLocation.text = it.getLocation()
@@ -74,5 +74,8 @@ class UserDetailedFragment : Fragment() {
 
     }
 
+    private fun showToast(message: String) {
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+    }
 
 }

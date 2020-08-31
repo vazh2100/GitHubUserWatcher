@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.navGraphViewModels
 import com.squareup.picasso.Picasso
@@ -25,15 +26,12 @@ class UserListFragment : Fragment() {
         adapter.onReachEndListener = object : UserAdapter.OnReachEndListener {
             override fun onReachEnd() {
                 viewModel.loadUsers(adapter.getUserList().last().id)
+                progressBarLoading.visibility = View.VISIBLE
             }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_user_list, container, false)
     }
 
@@ -50,16 +48,14 @@ class UserListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        viewModel.isLoading.observe(viewLifecycleOwner, {
-            when (it) {
-                true -> progressBarLoading.visibility = View.VISIBLE
-                false -> progressBarLoading.visibility = View.INVISIBLE
-            }
+        viewModel.getErrors().observe(viewLifecycleOwner, {
+            it?.let{showToast(it)
+                progressBarLoading.visibility = View.GONE}
         })
 
         viewModel.getUsers().observe(viewLifecycleOwner,  {
             adapter.setUserList(it)
+            progressBarLoading.visibility = View.GONE
         })
 
         viewModel.getLoggedUser(LoggedUser.id).observe(viewLifecycleOwner, {
@@ -73,8 +69,13 @@ class UserListFragment : Fragment() {
                     UserDetailedFragment.goTo(this@UserListFragment, id, login)
                 }
             }
+            progressBarLoading.visibility = View.GONE
         })
 
+
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
 
     }
 }
