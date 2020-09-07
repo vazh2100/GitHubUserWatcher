@@ -64,11 +64,13 @@ data class UserDetailed(
 
 
 ) {
-
     fun getCompany(): String? = company ?: "Отсутствует"
     fun getBlog(): String? = if (blog==null || blog.isEmpty() ) { "Отсутствует"} else {blog}
     fun getLocation(): String? = location ?: "Отсутствует"
     fun getEmail(): String? = email ?: "Отсутствует"
     fun getTwitterUsername(): String? = twitterUsername ?: "Отсутствует"
     fun getBio():String? = bio ?: "Отсутствует"
+    fun getDate():String?{
+        return createdAt?.substringBefore("T")
+    }
 }

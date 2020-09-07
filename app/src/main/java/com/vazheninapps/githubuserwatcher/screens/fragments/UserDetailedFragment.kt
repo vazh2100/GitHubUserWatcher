@@ -44,7 +44,7 @@ class UserDetailedFragment : Fragment() {
                     textViewBlog.text = it.getBlog()
                     textViewFollowers.text = it.followers.toString()
                     textViewFollowing.text = it.following.toString()
-                    textViewCreatedAt.text = it.createdAt
+                    textViewCreatedAt.text = it.getDate()
                     Picasso.get().load(it.avatarUrl).into(imageViewAvatar)
                     expandableTextView.setText(it.getBio())
                     if(it.id == LoggedUser.id){
