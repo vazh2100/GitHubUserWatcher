@@ -14,7 +14,7 @@ class AuthBody {
         private const val NOTE = BuildConfig.APPLICATION_ID
         private const val NOTE_URL = "app://login"
         const val CLIENT_ID = "15cd599c5fa67e6c0154"
-         const val CLIENT_SECRET = "1e432bb7b7cb02d42bc3afbc8ede65fd06cd1fbd"
+        const val CLIENT_SECRET = "1e432bb7b7cb02d42bc3afbc8ede65fd06cd1fbd"
 
         fun generate(): AuthBody {
             val body = AuthBody()
