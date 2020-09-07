@@ -13,6 +13,7 @@ import com.vazheninapps.githubuserwatcher.adapters.UserAdapter
 import com.vazheninapps.githubuserwatcher.database.LoggedUser
 import com.vazheninapps.githubuserwatcher.pojo.User
 import kotlinx.android.synthetic.main.fragment_user_list.*
+import kotlinx.android.synthetic.main.item_user_simple.*
 
 
 @Suppress("DEPRECATION")
@@ -65,7 +66,7 @@ class UserListFragment : Fragment() {
                 textViewLogin.text = login
                 textViewId.text = id.toString()
                 Picasso.get().load(it.avatarUrl).into(imageViewAvatar)
-                materialCardViewUser.setOnClickListener {
+                include.setOnClickListener {
                     UserDetailedFragment.goTo(this@UserListFragment, id, login)
                 }
             }
