@@ -6,11 +6,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vazheninapps.githubuserwatcher.R
-import com.vazheninapps.githubuserwatcher.api.ApiFactory
+import com.vazheninapps.githubuserwatcher.api.ApiFactoryMain
 import com.vazheninapps.githubuserwatcher.database.LoggedUser
 import com.vazheninapps.githubuserwatcher.database.UserDatabase
 import com.vazheninapps.githubuserwatcher.pojo.User
 import com.vazheninapps.githubuserwatcher.pojo.UserDetailed
+import com.vazheninapps.githubuserwatcher.utils.NetworkUtils
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -41,10 +42,9 @@ class UserViewModel constructor(application: Application) : AndroidViewModel(app
     }
 
     fun loadUsers(since: Int = 0) {
-        if (ApiFactory.isInternetConnection(getApplication())) {
-            val disposable: Disposable = ApiFactory
-                .getInstance()
-                .userService!!
+        if (NetworkUtils.isInternetConnection(getApplication())) {
+            val disposable: Disposable = ApiFactoryMain
+                .userService
                 .getUsers(since, LoggedUser.token)
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -59,11 +59,10 @@ class UserViewModel constructor(application: Application) : AndroidViewModel(app
     }
 
    private fun loadUserDetailed(login: String?) {
-        if (ApiFactory.isInternetConnection(getApplication())) {
+        if (NetworkUtils.isInternetConnection(getApplication())) {
 
-            val disposable: Disposable = ApiFactory
-                .getInstance()
-                .userService!!
+            val disposable: Disposable = ApiFactoryMain
+                .userService
                 .getUserDetail(login, LoggedUser.token)
                 .subscribeOn(Schedulers.io())
                 .subscribe({ db.userDao().insertUserDetailed(it)
