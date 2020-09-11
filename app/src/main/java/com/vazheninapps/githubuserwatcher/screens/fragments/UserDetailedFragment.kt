@@ -45,7 +45,7 @@ class UserDetailedFragment : Fragment() {
                     textViewFollowers.text = it.followers.toString()
                     textViewFollowing.text = it.following.toString()
                     textViewCreatedAt.text = it.getDate()
-                    Picasso.get().load(it.avatarUrl).into(imageViewAvatar)
+                    Picasso.get().load(it.avatarUrl).placeholder(R.drawable.user_place_holder).into(imageViewAvatar)
                     expandableTextView.setText(it.getBio())
                     if(it.id == LoggedUser.id){
                         buttonLogOut.visibility = View.VISIBLE

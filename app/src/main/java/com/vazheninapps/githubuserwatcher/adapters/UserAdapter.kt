@@ -51,7 +51,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
         val user = userList[position]
         with(holder) {
-            Picasso.get().load(user.avatarUrl).into(imageViewAvatar)
+            Picasso.get().load(user.avatarUrl).placeholder(R.drawable.user_place_holder).into(imageViewAvatar)
             textViewLogin.text = user.login
             textViewId.text = user.id.toString()
             itemView.setOnClickListener {

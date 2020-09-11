@@ -65,7 +65,7 @@ class UserListFragment : Fragment() {
                 val id = it.id
                 textViewLogin.text = login
                 textViewId.text = id.toString()
-                Picasso.get().load(it.avatarUrl).into(imageViewAvatar)
+                Picasso.get().load(it.avatarUrl).placeholder(R.drawable.user_place_holder).into(imageViewAvatar)
                 include.setOnClickListener {
                     UserDetailedFragment.goTo(this@UserListFragment, id, login)
                 }
